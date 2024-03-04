@@ -486,6 +486,7 @@ __lp_source_config() {
     LP_ENABLE_OS_VERSION=${LP_ENABLE_OS_VERSION:-1}
     LP_ENABLE_HYPERLINKS=${LP_ENABLE_HYPERLINKS:-0}
     LP_ENABLE_PATH=${LP_ENABLE_PATH:-1}
+    LP_DISABLE_LOW_COLOR_WARNING=${LP_DISABLE_LOW_COLOR_WARNING:-0}
 
     LP_MARK_DEFAULT="${LP_MARK_DEFAULT:-$_LP_MARK_SYMBOL}"
     LP_MARK_BATTERY="${LP_MARK_BATTERY:-"⌁"}"
@@ -755,6 +756,11 @@ lp_activate() {
     # TODO handle this case better. With no colors, no need for any escaping
     if ! command -v tput >/dev/null; then
         echo "liquidprompt: 'tput' not available; will not be able to format terminal" >&2
+        LP_ENABLE_COLOR=0
+    elif (( $( tput colors 2>/dev/null ) < 8 )); then
+        if (( ! LP_DISABLE_LOW_COLOR_WARNING )); then
+            echo "liquidprompt: terminal '$TERM' does not support enough colors. Set LP_DISABLE_LOW_COLOR_WARNING to silence this warning" >&2
+        fi
         LP_ENABLE_COLOR=0
     else
         _LP_TI_RESET="$( { tput sgr0 || tput me ; } 2>/dev/null )"

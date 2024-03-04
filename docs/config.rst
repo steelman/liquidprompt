@@ -266,6 +266,15 @@ Features
 
    .. versionadded:: 2.1
 
+.. attribute:: LP_DISABLE_LOW_COLOR_WARNING
+   :type: bool
+   :value: 0
+
+   When a terminal does not support displaying eight or more colours
+   according to the terminfo database, liquidprompt sets LP_ENABLE_COLOR
+   to 0. The warning message can be disabled by setting
+   LP_DISABLE_LOW_COLOR_WARNING to 1.
+
 .. attribute:: LP_DISABLED_VCS_PATH
    :type: string
    :value: ""
